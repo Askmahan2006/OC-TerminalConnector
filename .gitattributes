@@ -1,0 +1,2 @@
+# Keep Unix line endings (LF) so the scripts also work when committed from Windows.
+* text=auto eol=lf
