@@ -42,7 +42,7 @@ fi
 
 # ---- Check dependencies -----------------------------------------------------
 missing=""
-for cmd in bash openconnect expect sudo; do
+for cmd in bash openconnect expect sudo setsid; do
     command -v "$cmd" >/dev/null 2>&1 || missing="$missing $cmd"
 done
 
