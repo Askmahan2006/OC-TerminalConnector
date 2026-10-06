@@ -68,5 +68,20 @@ if [ -f "$CONFIG_FILE" ]; then
     echo "Existing config found, leaving it untouched: $CONFIG_FILE"
 fi
 
+# ---- Make sure `vpn` can be run from ANY directory ---------------------------
+# The command works everywhere as long as its folder is listed in $PATH.
+# (/usr/local/bin is in $PATH on virtually every Linux system.)
+case ":$PATH:" in
+    *":$BIN_DIR:"*) ;;
+    *)
+        echo
+        echo "WARNING: $BIN_DIR is not in your PATH, so 'vpn' will only work"
+        echo "if you type its full path. Add this line to ~/.bashrc (or ~/.zshrc):"
+        echo "    export PATH=\"$BIN_DIR:\$PATH\""
+        echo "then open a new terminal."
+        ;;
+esac
+
 echo
-echo "Done. Run 'vpn' to connect. On first run it will ask for your login details."
+echo "Done. Open a new terminal (or run: hash -r) and type 'vpn' from any folder."
+echo "On first run it will ask for your login details."
