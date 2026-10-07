@@ -1,0 +1,17 @@
+# vpn-cli configuration
+#
+# Copy this file to ~/.config/vpn-cli/config and fill in your details:
+#
+#   mkdir -p ~/.config/vpn-cli
+#   cp config.example ~/.config/vpn-cli/config
+#   chmod 600 ~/.config/vpn-cli/config
+#
+# This is a plain shell file: one VAR="value" per line.
+# NEVER commit your real config file to Git.
+
+# Hostname (or IP) of your VPN server. `vpn change-server HOST` updates this line.
+VPN_SERVER="vpn.example.com"
+
+# Your VPN login.
+VPN_USERNAME="YOUR_USERNAME"
+VPN_PASSWORD="YOUR_PASSWORD"

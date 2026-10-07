@@ -1,0 +1,10 @@
+# Real config files contain credentials: never commit them
+config
+*.conf
+.env
+*.secret
+
+# Editor / OS junk
+*.swp
+*~
+.DS_Store
