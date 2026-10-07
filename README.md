@@ -63,7 +63,7 @@ expect -v
 
 ```bash
 git clone https://github.com/Askmahan2006/OC-TerminalConnector.git
-cd OC-TerminalConnector
+cd ~/OC-TerminalConnector
 ./install.sh
 ```
 
