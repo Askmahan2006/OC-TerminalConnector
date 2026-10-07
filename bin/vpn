@@ -104,7 +104,7 @@ setup() {
         read -r -s -p "Password: " pass; echo
         read -r -s -p "Confirm password: " pass2; echo
 
-        if [ "$pass" != "$pass2" ] \vert{}\vert{} [ -z "$pass" ]; then
+        if [ "$pass" != "$pass2" ] || [ -z "$pass" ]; then
             if [ "$attempt" -ge "$max_retries" ]; then
                 die "Passwords do not match. Exiting setup."
             fi
