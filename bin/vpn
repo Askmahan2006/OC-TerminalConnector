@@ -42,7 +42,7 @@ die() {
 # Make sure every command passed as an argument is installed.
 require_cmd() {
     for cmd in "$@"; do
-        command -v "$cmd" >/dev/null 2>&1 || die "'$cmd' is not installed."
+        command -v "$cmd" >/dev/null 2>&1 \vert{}\vert{} die "'$cmd' is not installed."
     done
 }
 
@@ -85,7 +85,7 @@ setup() {
         esac
     fi
 
-    local server user pass pass2
+    local server user pass pass2 attempt max_retries
 
     read -r -p "VPN server (hostname, e.g. vpn.example.com): " server
     [ -n "$server" ] || die "server cannot be empty."
@@ -98,10 +98,22 @@ setup() {
     [ -n "$user" ] || die "username cannot be empty."
 
     # -s = don't echo the password while typing. Ask twice to catch typos.
-    read -r -s -p "Password: " pass; echo
-    read -r -s -p "Confirm password: " pass2; echo
-    [ -n "$pass" ] || die "password cannot be empty."
-    [ "$pass" = "$pass2" ] || die "passwords do not match. Nothing was saved."
+    attempt=1
+    max_retries=3
+    while true; do
+        read -r -s -p "Password: " pass; echo
+        read -r -s -p "Confirm password: " pass2; echo
+
+        if [ "$pass" != "$pass2" ] \vert{}\vert{} [ -z "$pass" ]; then
+            if [ "$attempt" -ge "$max_retries" ]; then
+                die "Passwords do not match. Exiting setup."
+            fi
+            echo "Try again" >&2
+            attempt=$((attempt + 1))
+        else
+            break   # both entries match: continue and save
+        fi
+    done
 
     # Write the file inside a subshell with umask 077, so it is created
     # private (owner-only) from the very first moment: no window where other
@@ -142,9 +154,9 @@ load_config() {
     . "$CONFIG_FILE"
 
     # ${VAR:?msg} aborts with msg if the variable is unset or empty.
-    : "${VPN_SERVER:?VPN_SERVER is not set in $CONFIG_FILE}"
-    : "${VPN_USERNAME:?VPN_USERNAME is not set in $CONFIG_FILE}"
-    : "${VPN_PASSWORD:?VPN_PASSWORD is not set in $CONFIG_FILE}"
+    : "${VPN_SERVER:?VPN_SERVER is not set in$CONFIG_FILE}"
+    : "${VPN_USERNAME:?VPN_USERNAME is not set in$CONFIG_FILE}"
+    : "${VPN_PASSWORD:?VPN_PASSWORD is not set in$CONFIG_FILE}"
 }
 
 # -----------------------------------------------------------------------------
